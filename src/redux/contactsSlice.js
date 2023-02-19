@@ -8,22 +8,20 @@ const contactsInitialState = [
     { id: "id-4", name: "Annie Copeland", number: "227-91-26" }
 ];
 
-const contactsSlice = createSlice({
+export const contactsSlice = createSlice({
     name: 'contacts',
-    initialState: {items: contactsInitialState},
-    // initialState: contactsInitialState,
+    initialState: contactsInitialState,
     reducers: {
         addContacts(state, action) {
-            state.items.push(action.payload);
-            console.log(action.payload)
+            state.push(action.payload);
+            console.log(action.payload);
         },
 
         deleteContacts(state, action) { 
-            state.items.filter(contact => contact.id !== action.payload);
+            state.filter(contact => contact.id !== action.payload);
+            console.log(action.payload);
         },
     },
 });
 
 export const { addContacts, deleteContacts } = contactsSlice.actions;
-
-export const contactsReducer = contactsSlice.reducer;

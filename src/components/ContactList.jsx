@@ -7,7 +7,7 @@ import { getContacts } from 'redux/selectors';
 export const ContactList = () => {
     const dispatch = useDispatch();
     const contacts = useSelector(getContacts);
-    console.log(contacts, 'qwerty');
+    console.log(contacts, 'map');
 
     return (
             <ContactsList>
