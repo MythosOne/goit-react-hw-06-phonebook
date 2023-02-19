@@ -1,69 +1,76 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Form, Label, AddButton, Input } from './App.styled';
+import { Formik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts } from '../redux/contactsSlice';
+import { getContacts } from '../redux/selectors';
+import { nanoid } from 'nanoid';
+import { Form, Label, AddButton, Input} from './App.styled';
 
-export const ContactForm = ({onAddContact}) => {
-    const [name, setName] = useState('');
-    const [number, setNumber] = useState('');
+const initialValues = {
+    name: '',
+    number: '',
+};
 
-    const handleChange = event => {
-        const { name, value } = event.target;
+export const ContactForm = () => {
 
-        switch (name) {
-            case "name":
-                setName(value);
-                break;
-            case "number":
-                setNumber(value);
-                break;
-            default:
-                return;
-        };
-    };
+    const dispatch = useDispatch();
+    const contacts = useSelector(getContacts);
 
-    const handleSubmit = event => {
-        event.preventDefault();
 
-        onAddContact(name, number);
-        setName('');
-        setNumber('');
+    const handleSubmit = (values, { resetForm }) => {
+        const { name, number } = values;
+
+        const loweredCase = name.toLowerCase().trim();
+        const searchName = contacts.some(
+            cont => cont.name.toLowerCase().trim() === loweredCase
+        );
+
+        if (searchName) {
+            alert(`${name} is already in contacts`);
+        } else if (name.length === 0) {
+            alert('Fields must be filled!');
+        } else {
+            dispatch(addContacts(
+                {
+                    id: nanoid(),
+                    name,
+                    number,
+                }
+            ));
+        }
+        
+        resetForm();
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Label>
-                Name
-                <Input
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={handleChange}
-                    pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                    title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                    placeholder="Enter name"
-                    required
-                />
-            </Label>
-            <Label>
-                Number
-                <Input
-                    type="tel"
-                    name="number"
-                    value={number}
-                    onChange={handleChange}
-                    pattern="\d{3}[-]\d{2}[-]\d{2}"
-                    title="The phone number must consist of numbers and a dash ###-##-##"
-                    placeholder="Enter phone number"
-                    required
-                />
-            </Label>
-            <AddButton type='submit'>Add Contact</AddButton>
-        </Form>
+        <Formik
+            initialValues={initialValues}
+            onSubmit={handleSubmit}
+        >
+            <Form>
+                <Label>
+                    Name
+                    <Input
+                        type="text"
+                        name="name"
+                        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+                        placeholder="Enter name"
+                        required
+                    />
+                </Label>
+                <Label>
+                    Number
+                    <Input
+                        type="tel"
+                        name="number"
+                        pattern="\d{3}[-]\d{2}[-]\d{2}"
+                        title="The phone number must consist of numbers and a dash ###-##-##"
+                        placeholder="Enter phone number"
+                        required
+                    />
+                </Label>
+                <AddButton type='submit'>Add Contact</AddButton>
+            </Form>
+        </Formik>
     );
 };
-
-ContactForm.propTypes = {
-    onAddContact: PropTypes.func.isRequired,
-};
-
-export default ContactForm;
