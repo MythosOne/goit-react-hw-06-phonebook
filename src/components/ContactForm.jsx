@@ -14,10 +14,11 @@ export const ContactForm = () => {
 
     const dispatch = useDispatch();
     const contacts = useSelector(getContacts);
+    console.log('controlForm');
 
-
-    const handleSubmit = (values, { resetForm }) => {
-        const { name, number } = values;
+    const handleSubmit = ( name, number, { resetForm }) => {
+        // const { name, number } = values;
+        console.log('workForm');
 
         const loweredCase = name.toLowerCase().trim();
         const searchName = contacts.some(
