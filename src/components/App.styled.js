@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Form, Field } from 'formik';
 
 export const Container = styled.div`
     background-color: white;
@@ -27,7 +28,7 @@ export const TitleFilter = styled.h3`
     margin-bottom: 10px;
 `;
 
-export const Form = styled.form`
+export const AddContactForm = styled(Form)`
     width: 300px;
     display: flex;
     flex-direction: column;
@@ -76,6 +77,11 @@ export const Input = styled.input`
     border-radius: 4px;
 `;
 
+export const FormikInput = styled(Field)`
+    height: 20px;
+    border: 2px solid rgb(163 167 167);
+    border-radius: 4px;
+`;
 
 
 export const ContainerFilter = styled.div`

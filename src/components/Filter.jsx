@@ -4,9 +4,9 @@ import { setFilter } from '../redux/contactsSlice';
 import { TitleFilter, ContainerFilter, Input } from './App.styled';
 
 export const Filter = () => {
-    const filter = useSelector(getFilter);
     const dispatch = useDispatch();
-    console.log(filter, 'Filter');
+    const filter = useSelector(getFilter);
+    console.log(filter)
 
     return (
         <ContainerFilter>
