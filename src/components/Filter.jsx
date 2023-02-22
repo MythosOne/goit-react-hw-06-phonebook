@@ -6,7 +6,6 @@ import { TitleFilter, ContainerFilter, Input } from './App.styled';
 export const Filter = () => {
     const dispatch = useDispatch();
     const filter = useSelector(getFilter);
-    console.log(filter)
 
     return (
         <ContainerFilter>
